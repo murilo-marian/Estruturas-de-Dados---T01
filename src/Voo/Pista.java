@@ -4,8 +4,8 @@ import Util.Node;
 
 public class Pista {
 
-    private Node inicio;
-    private Node fim;
+    private Aviao inicio;
+    private Aviao fim;
     private int tamanho = 0;
 
     public boolean estaVazio() {
@@ -14,21 +14,21 @@ public class Pista {
 
     public Aviao getInicio() {
         if (!estaVazio()) {
-            return inicio.getData();
+            return inicio;
         } else {
             return null;
         }
     }
 
-    public void setInicio(Node inicio) {
+    public void setInicio(Aviao inicio) {
         this.inicio = inicio;
     }
 
-    public Node getFim() {
+    public Aviao getFim() {
         return fim;
     }
 
-    public void setFim(Node fim) {
+    public void setFim(Aviao fim) {
         this.fim = fim;
     }
 
@@ -41,20 +41,19 @@ public class Pista {
     }
 
     public void inserir(Aviao aviao) {
-        Node novo = new Node(aviao);
-        novo.getData().setId(2); //gerar id
+        aviao.setId(2); //gerar id
         if (estaVazio()) {
-            inicio = novo;
+            inicio = aviao;
         } else {
-            fim.setProx(novo);
+            fim.setProx(aviao);
         }
-        fim = novo;
+        fim = aviao;
         tamanho++;
     }
 
     public void decolar() {
         if (!estaVazio()) {
-            System.out.println("Decolado o voo: " + inicio.getData().getId());
+            System.out.println("Decolado o voo: " + inicio.getId());
             inicio = inicio.getProx();
             tamanho--;
         } else {
