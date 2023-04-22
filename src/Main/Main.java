@@ -2,18 +2,28 @@ package Main;
 
 import Voo.Aviao;
 import Voo.Espera;
+import Voo.Pista;
 
 public class Main {
     public static void main(String[] args) {
         Espera espera = new Espera();
-        Aviao aviao1 = new Aviao(2, 5);
-        Aviao aviao2 = new Aviao(4, 2);
-        Aviao aviao3 = new Aviao(6, 5);
-        Aviao aviao4 = new Aviao(8, 7);
+        Pista pista = new Pista();
+        espera.setPista(pista);
+        Aviao aviao1 = new Aviao(2, 2);
+        Aviao aviao2 = new Aviao(4, 5);
+        Aviao aviao3 = new Aviao(6, 1);
+        Aviao aviao4 = new Aviao(8, 5);
         Aviao aviao5 = new Aviao(10, 8);
-        Aviao aviao6 = new Aviao(12, 1);
-        Aviao aviao7 = new Aviao(14, 22);
+        Aviao aviao6 = new Aviao(12, 3);
+        Aviao aviao7 = new Aviao(14, 3);
 
-        espera.setInicio(aviao1);
+        espera.inserirInicio(aviao1);
+        espera.inserirFim(aviao2);
+        espera.inserirFim(aviao3);
+        espera.inserirFim(aviao4);
+        espera.inserirFim(aviao5);
+        espera.inserirFim(aviao6);
+        espera.inserirFim(aviao7);
+        espera.pousar();
     }
 }

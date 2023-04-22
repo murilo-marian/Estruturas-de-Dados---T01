@@ -1,7 +1,5 @@
 package Voo;
 
-import Util.Node;
-
 public class Pista {
 
     private Aviao inicio;
@@ -41,7 +39,6 @@ public class Pista {
     }
 
     public void inserir(Aviao aviao) {
-        aviao.setId(2); //gerar id
         if (estaVazio()) {
             inicio = aviao;
         } else {
