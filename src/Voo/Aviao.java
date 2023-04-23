@@ -4,7 +4,6 @@ public class Aviao {
     private int id;
     private int gas;
     private Aviao prox;
-    private Aviao ant;
 
     public Aviao() {
     }
@@ -20,14 +19,6 @@ public class Aviao {
 
     public void setProx(Aviao prox) {
         this.prox = prox;
-    }
-
-    public Aviao getAnt() {
-        return ant;
-    }
-
-    public void setAnt(Aviao ant) {
-        this.ant = ant;
     }
 
     public int getId() {

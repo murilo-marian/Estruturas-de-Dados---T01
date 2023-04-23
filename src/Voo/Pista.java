@@ -45,6 +45,7 @@ public class Pista {
             fim.setProx(aviao);
         }
         fim = aviao;
+        aviao.setProx(null);
         tamanho++;
     }
 
@@ -57,4 +58,18 @@ public class Pista {
             System.out.println("A fila está vazia");
         }
     }
+
+    public String mostraLista(){
+        StringBuilder teste = new StringBuilder();
+        if (estaVazio()) {
+            return "Lista Vazia";
+        }
+        Aviao aux = inicio;
+        while (aux != null) {
+            teste.append(aux.toString() + "  ");
+            aux =  aux.getProx();
+        }
+        return teste.toString();
+    }
+
 }

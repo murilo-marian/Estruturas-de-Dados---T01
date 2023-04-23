@@ -2,7 +2,6 @@ package Voo;
 
 public class Espera {
     private Aviao inicio;
-    private Aviao fim;
     private Pista pista;
 
     public Espera() {
@@ -32,110 +31,83 @@ public class Espera {
         this.pista = pista;
     }
 
-    public void inserirInicio(Aviao novo) {
-        if (inicio != null) {
-            inicio.setAnt(novo);
-            novo.setProx(inicio);
-        }
-        inicio = novo;
-        if (fim == null) {
-            fim = novo;
-        }
-    }
-    
-    public void inserirFim(Aviao novo) {
-        if (fim != null) {
-            fim.setProx(novo);
-            novo.setAnt(fim);
-        }
-        fim = novo;
-        if (inicio == null) {
-            inicio = novo;
-        }
+    public void inserirInicio(Aviao aviao) {
+        aviao.setProx(inicio);
+        inicio = aviao;
     }
 
-    public void removeInicio() {
-        Aviao nodoRemovido = inicio;
-        if (inicio == null) return;
-
-        inicio = inicio.getProx();
-        if (inicio != null) {
-            inicio.setAnt(null);
-        }
-
-        if (nodoRemovido == fim) {
-            removeFinal();
-        }
-    }
-
-    public void removeFinal() {
-        Aviao nodoRemovido = fim;
-        if (fim == null) {
+    public void deleteComValor(int valor) {
+        if (vazia()) {
             return;
         }
-
-        fim = fim.getAnt();
-        if (fim != null) {
-            fim.setProx(null);
+        if (inicio.getId() == valor) {
+            inicio = inicio.getProx();
+            return;
         }
-        if (nodoRemovido == inicio) {
-            removeInicio();
-        }
-    }
-    
-    public void removeId(int id) {
-        Aviao nodoRemovido = null;
         Aviao aux = inicio;
-
-        while (aux != null) {
-            if (aux.getId() == id) {
-                nodoRemovido = aux;
-                break;
+        while (aux.getProx() != null) {
+            if (aux.getProx().getId() == valor) {
+                aux.setProx(aux.getProx().getProx());
+                return;
             }
             aux = aux.getProx();
         }
-
-        if (nodoRemovido == null) return;
-
-        if (nodoRemovido == inicio) {
-            removeInicio();
-        } else if (nodoRemovido == fim) {
-            removeFinal();
-        } else {
-            nodoRemovido.getAnt().setProx(nodoRemovido.getProx());
-            nodoRemovido.getProx().setAnt(nodoRemovido.getAnt());
-        }
     }
 
-    
+    public void inserirFim(Aviao aviao) {
+        Aviao aux = inicio;
+        while (aux.getProx() != null) {
+            aux = aux.getProx();
+        }
+        aux.setProx(aviao);
+    }
 
     public void pousar() {
-
         Aviao aux = inicio;
         Aviao emergencia = aux;
+
         while (aux.getProx() != null) {
-            System.out.println(aux.toString());
             emergencia = checarEmergencia(aux, emergencia); //checa se há algum pouso de emergencia a ser realizado
             aux = aux.getProx();
         }
-        System.out.println("loop end");
 
         if (emergencia.getGas() < 3) {
             System.out.println("emergencia");
-            System.out.println(emergencia.toString());
-
-            removeId(emergencia.getId());
+            deleteComValor(emergencia.getId());
+            pista.inserir(emergencia);
         } else {
-            removeFinal();
+            System.out.println("delete final");
+            deleteComValor(aux.getId());
+            pista.inserir(aux);
         }
     }
 
     public Aviao checarEmergencia(Aviao aux, Aviao emergencia) {
             if (aux.getGas() < emergencia.getGas()) {
-                System.out.println("menor " + aux.toString());
                 emergencia = aux;
                 return emergencia;
             }
         return emergencia;
+    }
+
+    public String mostraLista(){
+        StringBuilder teste = new StringBuilder();
+        if (vazia()) {
+            return "Lista Vazia";
+        }
+        Aviao aux = inicio;
+        while (aux != null) {
+            teste.append(aux.toString() + "  ");
+            aux =  aux.getProx();
+        }
+        return teste.toString();
+    }
+
+    public void gastarCombustivel() {
+        Aviao aux = inicio;
+        while (aux != null) {
+            aux.setGas(aux.getGas() - 1);
+            aux = aux.getProx();
+        }
     }
 }

@@ -21,9 +21,21 @@ public class Main {
         espera.inserirFim(aviao2);
         espera.inserirFim(aviao3);
         espera.inserirFim(aviao4);
+        espera.pousar();
         espera.inserirFim(aviao5);
         espera.inserirFim(aviao6);
         espera.inserirFim(aviao7);
+        System.out.println(espera.mostraLista());
+        espera.gastarCombustivel();
+
+        System.out.println(espera.mostraLista());
+
         espera.pousar();
+        System.out.println("pousado");
+
+        System.out.println(espera.mostraLista());
+        System.out.println(pista.mostraLista());
+
+
     }
 }
