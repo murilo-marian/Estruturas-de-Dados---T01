@@ -15,6 +15,12 @@ public class Aviao {
         this.tempoDeEspera = 0;
     }
 
+    public Aviao(Aviao aviao) {
+        this.id = aviao.getId();
+        this.gas = aviao.getGas();
+        this.tempoDeEspera = aviao.getTempoDeEspera();
+    }
+
     public Aviao getProx() {
         return prox;
     }

@@ -5,6 +5,7 @@ public class Pista {
     private Aviao inicio;
     private Aviao fim;
     private int tamanho = 0;
+    private int lastId = 0;
 
     public boolean estaVazio() {
         return tamanho == 0;
@@ -46,21 +47,35 @@ public class Pista {
         }
         fim = aviao;
         aviao.setProx(null);
-        tamanho++;
         aviao.setTempoDeEspera(0);
+        tamanho++;
+        lastId += 2;
+        aviao.setId(lastId);
     }
 
-    public void decolar() {
+    public String decolar() {
         if (!estaVazio()) {
-            System.out.println("Decolado o voo: " + inicio.getId());
+            int id = inicio.getId();
             inicio = inicio.getProx();
             tamanho--;
+            return "Decolado o avião de ID: " + id;
         } else {
-            System.out.println("A fila está vazia");
+            return "Fila Vazia";
         }
     }
 
-    public String mostraLista(){
+    public int calcularTempoEspera() {
+        Aviao aux = inicio;
+        int soma = 0;
+        while (aux != null) {
+            soma += aux.getTempoDeEspera();
+            aux = aux.getProx();
+        }
+        int media = soma / tamanho;
+        return media;
+    }
+
+    public String mostraLista() {
         StringBuilder teste = new StringBuilder();
         if (estaVazio()) {
             return "Lista Vazia";
@@ -68,7 +83,7 @@ public class Pista {
         Aviao aux = inicio;
         while (aux != null) {
             teste.append(aux.toString() + "  ");
-            aux =  aux.getProx();
+            aux = aux.getProx();
         }
         return teste.toString();
     }

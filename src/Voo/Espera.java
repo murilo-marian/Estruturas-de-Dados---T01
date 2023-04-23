@@ -1,9 +1,10 @@
 package Voo;
+import java.util.Random;
 
 public class Espera {
     private Aviao inicio;
     private Pista pista;
-    private int lastId;
+    private int lastId = -1;
     private int tamanho;
 
     public Espera() {
@@ -38,7 +39,7 @@ public class Espera {
     public void inserirInicio(Aviao aviao) {
         aviao.setProx(inicio);
         inicio = aviao;
-        lastId = 00;
+        lastId = lastId + 2;
         aviao.setId(lastId);
         tamanho++;
     }
@@ -63,6 +64,11 @@ public class Espera {
     }
 
     public void inserirFim(Aviao aviao) {
+        if (inicio == null) {
+            inserirInicio(aviao);
+            return;
+        }
+
         Aviao aux = inicio;
         while (aux.getProx() != null) {
             aux = aux.getProx();
@@ -74,44 +80,67 @@ public class Espera {
         tamanho++;
     }
 
-    public void pousar() {
+    public Aviao pousar() {
         Aviao aux = inicio;
-        Aviao emergencia = aux;
-        int tempo = 0;
 
         while (aux.getProx() != null) {
-            emergencia = checarEmergencia(aux, emergencia); //checa se há algum pouso de emergencia a ser realizado
             aux = aux.getProx();
-            tempo += somarTempoDeEspera(aux);
-            tempo = tempo / tamanho;
         }
 
-        if (emergencia.getGas() < 3) {
-            System.out.println("emergencia");
-            deleteComValor(emergencia.getId());
-            pista.inserir(emergencia);
-        } else {
-            System.out.println("delete final");
-            deleteComValor(aux.getId());
-            pista.inserir(aux);
-        }
+        System.out.println("delete final");
+        deleteComValor(aux.getId());
+        Aviao aviao = new Aviao(aux);
+        pista.inserir(aux);
 
         gastarCombustivel();
+
+        return aviao;
     }
 
-    private int somarTempoDeEspera(Aviao aux) {
-        return aux.getTempoDeEspera();
+    public Aviao pousarEmergencia() {
+        Aviao aux = inicio;
+        Aviao emergencia = aux;
+
+        while (aux != null) {
+            emergencia = pegarEmergencia(aux, emergencia); //checa se há algum pouso de emergencia a ser realizado
+            aux = aux.getProx();
+        }
+
+        if (emergencia.getGas() == 0) {
+            System.out.println("BOOM");
+        }
+
+        deleteComValor(emergencia.getId());
+        Aviao aviao = new Aviao(emergencia);
+
+        pista.inserir(emergencia);
+
+        gastarCombustivel();
+
+        return aviao;
     }
 
-    public Aviao checarEmergencia(Aviao aux, Aviao emergencia) {
-            if (aux.getGas() < emergencia.getGas()) {
-                emergencia = aux;
-                return emergencia;
-            }
+    public Aviao pegarEmergencia(Aviao aux, Aviao emergencia) {
+        if (aux.getGas() < emergencia.getGas()) {
+            emergencia = aux;
+            return emergencia;
+        }
         return emergencia;
     }
 
-    public String mostraLista(){
+    public Boolean checarEmergencia() {
+        Aviao aux = inicio;
+        while (aux != null) {
+            if (aux.getGas() < 4) {
+                return true;
+            }
+
+            aux = aux.getProx();
+        }
+        return false;
+    }
+
+    public String mostraLista() {
         StringBuilder teste = new StringBuilder();
         if (vazia()) {
             return "Lista Vazia";
@@ -119,7 +148,7 @@ public class Espera {
         Aviao aux = inicio;
         while (aux != null) {
             teste.append(aux.toString() + "  ");
-            aux =  aux.getProx();
+            aux = aux.getProx();
         }
         return teste.toString();
     }
@@ -130,6 +159,15 @@ public class Espera {
             aux.setGas(aux.getGas() - 1);
             aux.setTempoDeEspera(aux.getTempoDeEspera() + 1);
             aux = aux.getProx();
+        }
+    }
+
+    public void gerarAviao(int n) {
+        Random rand = new Random();
+        Aviao aviao = new Aviao();
+        for (int i = 0; i < n; i++) {
+            aviao.setGas(rand.nextInt(1, 21));
+            inserirFim(aviao);
         }
     }
 }
