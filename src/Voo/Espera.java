@@ -3,12 +3,16 @@ package Voo;
 public class Espera {
     private Aviao inicio;
     private Pista pista;
+    private int lastId;
+    private int tamanho;
 
     public Espera() {
+        tamanho = 0;
     }
 
     public Espera(Aviao inicio) {
         this.inicio = inicio;
+        tamanho = 1;
     }
 
     public boolean vazia() {
@@ -34,6 +38,9 @@ public class Espera {
     public void inserirInicio(Aviao aviao) {
         aviao.setProx(inicio);
         inicio = aviao;
+        lastId = 00;
+        aviao.setId(lastId);
+        tamanho++;
     }
 
     public void deleteComValor(int valor) {
@@ -52,6 +59,7 @@ public class Espera {
             }
             aux = aux.getProx();
         }
+        tamanho--;
     }
 
     public void inserirFim(Aviao aviao) {
@@ -60,15 +68,22 @@ public class Espera {
             aux = aux.getProx();
         }
         aux.setProx(aviao);
+
+        lastId = lastId + 2;
+        aviao.setId(lastId);
+        tamanho++;
     }
 
     public void pousar() {
         Aviao aux = inicio;
         Aviao emergencia = aux;
+        int tempo = 0;
 
         while (aux.getProx() != null) {
             emergencia = checarEmergencia(aux, emergencia); //checa se há algum pouso de emergencia a ser realizado
             aux = aux.getProx();
+            tempo += somarTempoDeEspera(aux);
+            tempo = tempo / tamanho;
         }
 
         if (emergencia.getGas() < 3) {
@@ -80,6 +95,12 @@ public class Espera {
             deleteComValor(aux.getId());
             pista.inserir(aux);
         }
+
+        gastarCombustivel();
+    }
+
+    private int somarTempoDeEspera(Aviao aux) {
+        return aux.getTempoDeEspera();
     }
 
     public Aviao checarEmergencia(Aviao aux, Aviao emergencia) {
@@ -107,6 +128,7 @@ public class Espera {
         Aviao aux = inicio;
         while (aux != null) {
             aux.setGas(aux.getGas() - 1);
+            aux.setTempoDeEspera(aux.getTempoDeEspera() + 1);
             aux = aux.getProx();
         }
     }

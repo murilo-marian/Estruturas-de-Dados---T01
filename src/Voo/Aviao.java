@@ -4,13 +4,15 @@ public class Aviao {
     private int id;
     private int gas;
     private Aviao prox;
+    private int tempoDeEspera;
 
     public Aviao() {
     }
 
-    public Aviao(int id, int gas) {
+    public Aviao(int gas) {
         this.id = id;
         this.gas = gas;
+        this.tempoDeEspera = 0;
     }
 
     public Aviao getProx() {
@@ -19,6 +21,14 @@ public class Aviao {
 
     public void setProx(Aviao prox) {
         this.prox = prox;
+    }
+
+    public int getTempoDeEspera() {
+        return tempoDeEspera;
+    }
+
+    public void setTempoDeEspera(int tempoDeEspera) {
+        this.tempoDeEspera = tempoDeEspera;
     }
 
     public int getId() {

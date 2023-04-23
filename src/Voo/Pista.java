@@ -47,6 +47,7 @@ public class Pista {
         fim = aviao;
         aviao.setProx(null);
         tamanho++;
+        aviao.setTempoDeEspera(0);
     }
 
     public void decolar() {
@@ -70,6 +71,14 @@ public class Pista {
             aux =  aux.getProx();
         }
         return teste.toString();
+    }
+
+    public void passarTempo() {
+        Aviao aux = inicio;
+        while (aux != null) {
+            aux.setTempoDeEspera(aux.getTempoDeEspera() + 1);
+            aux = aux.getProx();
+        }
     }
 
 }
