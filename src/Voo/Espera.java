@@ -92,8 +92,6 @@ public class Espera {
         Aviao aviao = new Aviao(aux);
         pista.inserir(aux);
 
-        gastarCombustivel();
-
         return aviao;
     }
 
@@ -115,8 +113,6 @@ public class Espera {
 
         pista.inserir(emergencia);
 
-        gastarCombustivel();
-
         return aviao;
     }
 
@@ -128,10 +124,10 @@ public class Espera {
         return emergencia;
     }
 
-    public Boolean checarEmergencia() {
+    public Boolean checarEmergencia(int n) {
         Aviao aux = inicio;
         while (aux != null) {
-            if (aux.getGas() < 4) {
+            if (aux.getGas() < n) {
                 return true;
             }
 
@@ -160,6 +156,7 @@ public class Espera {
             aux.setTempoDeEspera(aux.getTempoDeEspera() + 1);
             aux = aux.getProx();
         }
+        pista.passarTempo();
     }
 
     public void gerarAviao(int n) {

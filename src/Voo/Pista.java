@@ -53,26 +53,11 @@ public class Pista {
         aviao.setId(lastId);
     }
 
-    public String decolar() {
-        if (!estaVazio()) {
-            int id = inicio.getId();
-            inicio = inicio.getProx();
-            tamanho--;
-            return "Decolado o avião de ID: " + id;
-        } else {
-            return "Fila Vazia";
-        }
-    }
-
-    public int calcularTempoEspera() {
-        Aviao aux = inicio;
-        int soma = 0;
-        while (aux != null) {
-            soma += aux.getTempoDeEspera();
-            aux = aux.getProx();
-        }
-        int media = soma / tamanho;
-        return media;
+    public Aviao decolar() {
+        Aviao aviao = new Aviao(inicio);
+        inicio = inicio.getProx();
+        tamanho--;
+        return aviao;
     }
 
     public String mostraLista() {
