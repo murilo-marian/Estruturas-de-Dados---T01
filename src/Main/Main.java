@@ -17,9 +17,7 @@ public class Main {
     static int tempoEspera = 0;
     static int tempoPista = 0;
 
-    public static void main(String[] args) {
-
-        System.out.println("inicio");
+    public static void main(String[] args) throws InterruptedException {
 
         Espera espera = new Espera();
         Espera espera2 = new Espera();
@@ -43,16 +41,17 @@ public class Main {
         espera2.inserir(aviao5);
         espera2.inserir(aviao6);
 
-        System.out.println(espera.mostraLista());
-        System.out.println(espera2.mostraLista());
+        System.out.println("Iniciando Sistema");
         while (!espera.vazia() || !espera2.vazia()) {
             Aviao aviao;
             gerarAviao(espera, espera2);
-
+            Thread.sleep(1000);
 
             System.out.println("-----------------------------------");
             System.out.println("Sistema da pista/prateleira 1");
+            System.out.println("Conteúdo da Prateleira 1: " + espera.mostraLista());
             aviao = pousarDecolar(espera);
+            Thread.sleep(3000);
             if (aviao == null) {
                 System.out.println("Queda Detectada na Lista de Espera 1");
                 break;
@@ -60,7 +59,9 @@ public class Main {
 
             System.out.println("-----------------------------------");
             System.out.println("Sistema da pista/prateleira 2");
+            System.out.println("Conteúdo da Prateleira 2: " + espera2.mostraLista());
             aviao = pousarDecolar(espera2);
+            Thread.sleep(3000);
             if (aviao == null) {
                 System.out.println("Queda Detectada na Lista de Espera 2");
                 break;
@@ -71,13 +72,16 @@ public class Main {
             espera2.gastarCombustivel();
 
 
+            Thread.sleep(1000);
             System.out.println("-----------------------------------");
             System.out.println("Lista de Espera 1: " + espera.mostraLista() + espera.getTamanho());
             System.out.println("Lista de Espera 2: " + espera2.mostraLista() + espera2.getTamanho());
+            Thread.sleep(1000);
             System.out.println("-----------------------------------");
             System.out.println("Pista 1: " + pista.mostraLista());
             System.out.println("Pista 2: " + pista2.mostraLista());
             System.out.println("-----------------------------------");
+            Thread.sleep(1000);
             System.out.println("Ratio de Pousos: " + pousos); //ratio de pousos, tanto de emergencia quanto normais
             System.out.println("Ratio de Decolagens: " + decolagens); //ratio de decolagens
             System.out.println("Total de Pousos: " + totalPousos );
@@ -86,6 +90,7 @@ public class Main {
             System.out.println("Total de Pousos de Precaução: " + precaucao); //total de pousos entre normais e de emergencia (bandeira amarela)
             System.out.println("Tempo Médio de Espera para Pousar: " + tempoEspera / total); //média de espera
             System.out.println("Tempo Médio de Espera para Decolar: " + tempoPista / total); //média de espera
+            Thread.sleep(10000);
         }
 
         System.out.println("Sem mais aviões a pousar ou acidente detectado");
@@ -128,7 +133,7 @@ public class Main {
         }
     }
 
-    public static Aviao pousarDecolar(Espera e) {
+    public static Aviao pousarDecolar(Espera e) throws InterruptedException {
 
         Aviao aviao = new Aviao();
         if (e.checarEmergencia(3)) { //nível de emergencia 1
@@ -181,6 +186,7 @@ public class Main {
             totalDecolagens++;
             tempoPista += aviao.getTempoDeEspera();
         }
+        Thread.sleep(3000);
         System.out.println("Lista de Espera: " + e.mostraLista());
         System.out.println("Pista: " + e.getPista().mostraLista());
         return aviao;
