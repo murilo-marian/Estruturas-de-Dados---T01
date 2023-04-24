@@ -20,7 +20,9 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         Espera espera = new Espera();
+        espera.setId(1);
         Espera espera2 = new Espera();
+        espera2.setId(2);
         Pista pista = new Pista();
         Pista pista2 = new Pista();
         espera.setPista(pista);
@@ -42,18 +44,21 @@ public class Main {
         espera2.inserir(aviao6);
 
         System.out.println("Iniciando Sistema");
-        while (!espera.vazia() || !espera2.vazia()) {
+        //while (!espera.vazia() || !espera2.vazia()) { //até esvaziar
+        while (true) { //até cair
             Aviao aviao;
             gerarAviao(espera, espera2);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
             System.out.println("-----------------------------------");
             System.out.println("Sistema da pista/prateleira 1");
             System.out.println("Conteúdo da Prateleira 1: " + espera.mostraLista());
             aviao = pousarDecolar(espera);
-            Thread.sleep(3000);
+            //Thread.sleep(3000);
             if (aviao == null) {
+                System.out.println("----------QUEDA----------");
                 System.out.println("Queda Detectada na Lista de Espera 1");
+                System.out.println("----------QUEDA----------");
                 break;
             }
 
@@ -61,7 +66,7 @@ public class Main {
             System.out.println("Sistema da pista/prateleira 2");
             System.out.println("Conteúdo da Prateleira 2: " + espera2.mostraLista());
             aviao = pousarDecolar(espera2);
-            Thread.sleep(3000);
+            //Thread.sleep(3000);
             if (aviao == null) {
                 System.out.println("Queda Detectada na Lista de Espera 2");
                 break;
@@ -72,16 +77,16 @@ public class Main {
             espera2.gastarCombustivel();
 
 
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
             System.out.println("-----------------------------------");
             System.out.println("Lista de Espera 1: " + espera.mostraLista() + espera.getTamanho());
             System.out.println("Lista de Espera 2: " + espera2.mostraLista() + espera2.getTamanho());
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
             System.out.println("-----------------------------------");
             System.out.println("Pista 1: " + pista.mostraLista());
             System.out.println("Pista 2: " + pista2.mostraLista());
             System.out.println("-----------------------------------");
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
             System.out.println("Ratio de Pousos: " + pousos); //ratio de pousos, tanto de emergencia quanto normais
             System.out.println("Ratio de Decolagens: " + decolagens); //ratio de decolagens
             System.out.println("Total de Pousos: " + totalPousos );
@@ -90,7 +95,7 @@ public class Main {
             System.out.println("Total de Pousos de Precaução: " + precaucao); //total de pousos entre normais e de emergencia (bandeira amarela)
             System.out.println("Tempo Médio de Espera para Pousar: " + tempoEspera / total); //média de espera
             System.out.println("Tempo Médio de Espera para Decolar: " + tempoPista / total); //média de espera
-            Thread.sleep(10000);
+            //Thread.sleep(10000);
         }
 
         System.out.println("Sem mais aviões a pousar ou acidente detectado");
@@ -116,7 +121,7 @@ public class Main {
         int n = rand.nextInt(0, 3);
         for (int i = 0; i < n; i++) {
             Aviao aviao = new Aviao();
-            aviao.setGas(rand.nextInt(1, 21));
+            aviao.setGas(rand.nextInt(2, 21));
             if (n == 1) { //se apenas um, vai pra prateleira com menos aviões
                 if (e1.getTamanho() < e2.getTamanho()) {
                     e1.inserir(aviao);
@@ -149,8 +154,8 @@ public class Main {
             System.out.println("--------------------------");
 
             tempoEspera += aviao.getTempoDeEspera();
-            pousos++;
-            decolagens--;
+            e.setPousosRatio(e.getPousosRatio() + 1);
+            e.getPista().setDecolagensRatio(e.getPista().getDecolagensRatio() - 1);
             emergencias++;
             totalPousos++;
         } else if (e.checarEmergencia(5)) { //cautela
@@ -160,12 +165,12 @@ public class Main {
             System.out.println("Pousado avião de ID: " + aviao.getId());
 
             tempoEspera += aviao.getTempoDeEspera();
-            pousos++;
-            decolagens--;
+            e.setPousosRatio(e.getPousosRatio() + 1);
+            e.getPista().setDecolagensRatio(e.getPista().getDecolagensRatio() - 1);
             precaucao++;
             totalPousos++;
 
-        } else if ((decolagens > -1 && !e.vazia()) || totalPousos < 4) { //pouso comum
+        } else if ((e.getPista().getDecolagensRatio() > -1 && !e.vazia()) || totalPousos < 4) { //pouso comum
             System.out.println("------------------------------");
             System.out.println("Realizando Pouso");
             aviao = e.pousar();
@@ -173,22 +178,22 @@ public class Main {
 
             tempoEspera += aviao.getTempoDeEspera();
 
-            pousos++;
-            decolagens--;
+            e.setPousosRatio(e.getPousosRatio() + 1);
+            e.getPista().setDecolagensRatio(e.getPista().getDecolagensRatio() - 1);
             totalPousos++;
         } else if (!(e.getPista().getInicio() == null)) { //decolagem
             System.out.println("-----------------------------------");
             System.out.println("Realizando Decolagem");
             aviao = e.getPista().decolar();
             System.out.println("Decolando avião de ID: " + aviao.getId());
-            decolagens++;
-            pousos--;
+            e.setPousosRatio(e.getPousosRatio() - 1);
+            e.getPista().setDecolagensRatio(e.getPista().getDecolagensRatio() + 1);
             totalDecolagens++;
             tempoPista += aviao.getTempoDeEspera();
         }
-        Thread.sleep(3000);
-        System.out.println("Lista de Espera: " + e.mostraLista());
-        System.out.println("Pista: " + e.getPista().mostraLista());
+        //Thread.sleep(3000);
+        System.out.println("Lista de Espera " + e.getId() + ": " + e.mostraLista());
+        System.out.println("Pista " + e.getId() + ": " + e.getPista().mostraLista());
         return aviao;
     }
 }

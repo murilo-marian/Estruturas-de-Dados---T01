@@ -6,6 +6,7 @@ public class Pista {
     private Aviao fim;
     private int tamanho;
     private int lastId;
+    private int decolagensRatio;
 
     public Pista() {
         tamanho = 0;
@@ -42,6 +43,22 @@ public class Pista {
 
     public void setTamanho(int tamanho) {
         this.tamanho = tamanho;
+    }
+
+    public int getLastId() {
+        return lastId;
+    }
+
+    public void setLastId(int lastId) {
+        this.lastId = lastId;
+    }
+
+    public int getDecolagensRatio() {
+        return decolagensRatio;
+    }
+
+    public void setDecolagensRatio(int decolagensRatio) {
+        this.decolagensRatio = decolagensRatio;
     }
 
     public void inserir(Aviao aviao) {

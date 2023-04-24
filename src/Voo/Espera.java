@@ -5,8 +5,10 @@ import java.util.Random;
 public class Espera {
     private Aviao inicio;
     private Pista pista;
+    private int id;
     private int lastId = -1;
     private int tamanho;
+    private int pousosRatio;
 
     public Espera() {
         tamanho = 0;
@@ -14,6 +16,14 @@ public class Espera {
 
     public boolean vazia() {
         return inicio == null;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Aviao getInicio() {
@@ -46,6 +56,14 @@ public class Espera {
 
     public void setTamanho(int tamanho) {
         this.tamanho = tamanho;
+    }
+
+    public int getPousosRatio() {
+        return pousosRatio;
+    }
+
+    public void setPousosRatio(int pousosRatio) {
+        this.pousosRatio = pousosRatio;
     }
 
     public void inserirInicio(Aviao aviao) {
