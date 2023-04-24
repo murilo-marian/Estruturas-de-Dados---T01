@@ -7,8 +7,6 @@ import Voo.Pista;
 import java.util.Random;
 
 public class Main {
-    static int decolagens = 0;
-    static int pousos = 0;
     static int emergencias = 0;
     static int precaucao = 0;
     static int totalPousos = 0;
@@ -87,8 +85,6 @@ public class Main {
             System.out.println("Pista 2: " + pista2.mostraLista());
             System.out.println("-----------------------------------");
             //Thread.sleep(1000);
-            System.out.println("Ratio de Pousos: " + pousos); //ratio de pousos, tanto de emergencia quanto normais
-            System.out.println("Ratio de Decolagens: " + decolagens); //ratio de decolagens
             System.out.println("Total de Pousos: " + totalPousos );
             System.out.println("Total de Decolagens: " + totalDecolagens );
             System.out.println("Total de Emergencias: " + emergencias); //total de pousos categorizados como de emergência
