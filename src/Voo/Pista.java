@@ -4,8 +4,13 @@ public class Pista {
 
     private Aviao inicio;
     private Aviao fim;
-    private int tamanho = 0;
-    private int lastId = 0;
+    private int tamanho;
+    private int lastId;
+
+    public Pista() {
+        tamanho = 0;
+        lastId = 0;
+    }
 
     public boolean estaVazio() {
         return tamanho == 0;

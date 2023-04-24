@@ -1,4 +1,5 @@
 package Voo;
+
 import java.util.Random;
 
 public class Espera {
@@ -9,11 +10,6 @@ public class Espera {
 
     public Espera() {
         tamanho = 0;
-    }
-
-    public Espera(Aviao inicio) {
-        this.inicio = inicio;
-        tamanho = 1;
     }
 
     public boolean vazia() {
@@ -36,12 +32,45 @@ public class Espera {
         this.pista = pista;
     }
 
+    public int getLastId() {
+        return lastId;
+    }
+
+    public void setLastId(int lastId) {
+        this.lastId = lastId;
+    }
+
+    public int getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(int tamanho) {
+        this.tamanho = tamanho;
+    }
+
     public void inserirInicio(Aviao aviao) {
         aviao.setProx(inicio);
         inicio = aviao;
         lastId = lastId + 2;
         aviao.setId(lastId);
-        tamanho++;
+        setTamanho(getTamanho() + 1);
+    }
+
+    public void inserir(Aviao aviao) {
+        if (inicio == null) {
+            inserirInicio(aviao);
+            return;
+        }
+
+        Aviao aux = inicio;
+        while (aux.getProx() != null) {
+            aux = aux.getProx();
+        }
+        aux.setProx(aviao);
+
+        lastId = lastId + 2;
+        aviao.setId(lastId);
+        setTamanho(getTamanho() + 1);
     }
 
     public void deleteComValor(int valor) {
@@ -60,34 +89,16 @@ public class Espera {
             }
             aux = aux.getProx();
         }
-        tamanho--;
-    }
-
-    public void inserirFim(Aviao aviao) {
-        if (inicio == null) {
-            inserirInicio(aviao);
-            return;
-        }
-
-        Aviao aux = inicio;
-        while (aux.getProx() != null) {
-            aux = aux.getProx();
-        }
-        aux.setProx(aviao);
-
-        lastId = lastId + 2;
-        aviao.setId(lastId);
-        tamanho++;
     }
 
     public Aviao pousar() {
+        setTamanho(getTamanho() - 1);
         Aviao aux = inicio;
 
         while (aux.getProx() != null) {
             aux = aux.getProx();
         }
 
-        System.out.println("delete final");
         deleteComValor(aux.getId());
         Aviao aviao = new Aviao(aux);
         pista.inserir(aux);
@@ -98,21 +109,20 @@ public class Espera {
     public Aviao pousarEmergencia() {
         Aviao aux = inicio;
         Aviao emergencia = aux;
-
         while (aux != null) {
             emergencia = pegarEmergencia(aux, emergencia); //checa se há algum pouso de emergencia a ser realizado
             aux = aux.getProx();
         }
 
         if (emergencia.getGas() == 0) {
-            System.out.println("BOOM");
+            return null;
         }
 
+        setTamanho(getTamanho() - 1);
         deleteComValor(emergencia.getId());
         Aviao aviao = new Aviao(emergencia);
 
         pista.inserir(emergencia);
-
         return aviao;
     }
 
@@ -130,7 +140,6 @@ public class Espera {
             if (aux.getGas() < n) {
                 return true;
             }
-
             aux = aux.getProx();
         }
         return false;
@@ -157,14 +166,5 @@ public class Espera {
             aux = aux.getProx();
         }
         pista.passarTempo();
-    }
-
-    public void gerarAviao(int n) {
-        Random rand = new Random();
-        Aviao aviao = new Aviao();
-        for (int i = 0; i < n; i++) {
-            aviao.setGas(rand.nextInt(1, 21));
-            inserirFim(aviao);
-        }
     }
 }

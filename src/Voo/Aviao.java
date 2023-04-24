@@ -13,6 +13,7 @@ public class Aviao {
         this.id = id;
         this.gas = gas;
         this.tempoDeEspera = 0;
+        prox = null;
     }
 
     public Aviao(Aviao aviao) {
@@ -58,6 +59,7 @@ public class Aviao {
         final StringBuilder sb = new StringBuilder("Aviao{");
         sb.append("id=").append(id);
         sb.append(", gas=").append(gas);
+        sb.append(", espera=").append(tempoDeEspera);
         sb.append('}');
         return sb.toString();
     }
