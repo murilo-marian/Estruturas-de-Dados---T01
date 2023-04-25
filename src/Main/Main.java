@@ -94,7 +94,7 @@ public class Main {
             //Thread.sleep(10000);
         }
 
-        System.out.println("Sem mais aviões a pousar ou acidente detectado");
+        System.out.println("Sem mais aviões a pousar ou foi detectado acidente");
         System.out.println("-----------------------------------");
         System.out.println("Espera 1: " + espera.mostraLista());
         System.out.println("Pista 1: " + pista.mostraLista());
@@ -142,7 +142,7 @@ public class Main {
             System.out.println("Realizando pouso de emergencia");
 
             aviao = e.pousarEmergencia();
-            if (aviao == null) {
+            if (aviao == null) { //se o avião for null, logo o avião caiu
                 return null;
             }
 
@@ -159,6 +159,7 @@ public class Main {
             System.out.println("Realizando pouso de precaução");
             aviao = e.pousarEmergencia();
             System.out.println("Pousado avião de ID: " + aviao.getId());
+            System.out.println("--------------------------");
 
             tempoEspera += aviao.getTempoDeEspera();
             e.setPousosRatio(e.getPousosRatio() + 1);
@@ -171,6 +172,7 @@ public class Main {
             System.out.println("Realizando Pouso");
             aviao = e.pousar();
             System.out.println("Pousado avião de ID: " + aviao.getId());
+            System.out.println("--------------------------");
 
             tempoEspera += aviao.getTempoDeEspera();
 
@@ -182,6 +184,7 @@ public class Main {
             System.out.println("Realizando Decolagem");
             aviao = e.getPista().decolar();
             System.out.println("Decolando avião de ID: " + aviao.getId());
+            System.out.println("--------------------------");
             e.setPousosRatio(e.getPousosRatio() - 1);
             e.getPista().setDecolagensRatio(e.getPista().getDecolagensRatio() + 1);
             totalDecolagens++;
@@ -190,6 +193,7 @@ public class Main {
         //Thread.sleep(3000);
         System.out.println("Lista de Espera " + e.getId() + ": " + e.mostraLista());
         System.out.println("Pista " + e.getId() + ": " + e.getPista().mostraLista());
+        System.out.println("--------------------------");
         return aviao;
     }
 }
